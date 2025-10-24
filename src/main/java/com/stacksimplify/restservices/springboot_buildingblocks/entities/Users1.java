@@ -1,9 +1,12 @@
 package com.stacksimplify.restservices.springboot_buildingblocks.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -27,7 +30,11 @@ public class Users1 {
 	private String role;
 	@Column(name="SSN",length=50,nullable=false,unique=true)
 	private String ssn;
-	public Users1(long id, String userName, String firstName, String lastName, String email, String role, String ssn) {
+	
+	@OneToMany(mappedBy="users1")
+	
+	private List<Order> orders;
+	public Users1(long id, String userName, String firstName, String lastName, String email, String role, String ssn,List<Order>orders) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -36,6 +43,13 @@ public class Users1 {
 		this.email = email;
 		this.role = role;
 		this.ssn = ssn;
+		this.orders  =orders;
+	}
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 	public long getId() {
 		return id;
