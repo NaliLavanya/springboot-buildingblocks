@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +20,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stacksimplify.restservices.springboot_buildingblocks.entities.Users1;
 import com.stacksimplify.restservices.springboot_buildingblocks.exceptions.UserExistsException;
+import com.stacksimplify.restservices.springboot_buildingblocks.exceptions.UserNameNotFoundException;
 import com.stacksimplify.restservices.springboot_buildingblocks.exceptions.UserNotFoundException;
 import com.stacksimplify.restservices.springboot_buildingblocks.services.UserServices;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+
 @RestController
+@Validated
 public class UserController {
 
 	@Autowired
@@ -35,7 +41,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/createuser")
-	public ResponseEntity<Void> createUser(@RequestBody Users1 users1,UriComponentsBuilder builder)
+	public ResponseEntity<Void> createUser(@Valid @RequestBody Users1 users1,UriComponentsBuilder builder)
 	{
 		try {
 		 userService.createUser(users1);
@@ -50,7 +56,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{id}")
-	public Optional<Users1> getUserById(@PathVariable("id")Long id)
+	public Optional<Users1> getUserById(@PathVariable("id")@Min(1)Long id)
 	{
 		try {
 		return userService.getUserById(id);
@@ -59,9 +65,10 @@ public class UserController {
 		{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,ex.getMessage());
 		}
+	//	ConstraintViolationException
 	}
 	@PutMapping("/updateuser/{id}")
-	public Users1 updateUserById(@PathVariable("id")Long id,@RequestBody Users1 users1) throws UserNotFoundException {
+	public Users1 updateUserById(@PathVariable("id") Long id,@RequestBody Users1 users1) throws UserNotFoundException {
 		//Optional<Users1> users1 = getUserById(id);
 //	users1.setId(100);
 //	users1.setFirstName("ABC");
@@ -95,8 +102,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/getuserbyname/{username}")
-	public Users1 findByUserName(@PathVariable("username")String userName)
+	public Users1 findByUserName(@PathVariable("username")String userName) throws UserNameNotFoundException
 	{
-		return userService.findByUserName(userName);
+		Users1 users1 = userService.findByUserName(userName);
+		if(users1==null)
+		{
+			 throw new UserNameNotFoundException("user name "+userName+" not found ");
+		}
+		return users1;
 	}
 }

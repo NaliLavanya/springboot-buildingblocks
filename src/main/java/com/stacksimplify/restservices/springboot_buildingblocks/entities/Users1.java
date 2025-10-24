@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Users1 {
@@ -11,8 +13,10 @@ public class Users1 {
 	@Id
 	@GeneratedValue
 	private long id;
-	@Column(name="USER_NAME",length=50,nullable=false,unique=true)
+	@NotEmpty(message="Username is mandatory field .please provide username")
+//	@Column(name="USER_NAME",length=50,unique=true)
 	private String userName;
+	@Size(min=3, message="minimum firstname length should be there")
 	@Column(name="FIRST_NAME",length=50,nullable=false)
 	private String firstName;
 	@Column(name="LAST_NAME",length=50,nullable=false)
