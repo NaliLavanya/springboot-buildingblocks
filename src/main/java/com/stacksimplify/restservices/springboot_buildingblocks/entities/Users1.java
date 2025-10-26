@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@JsonIgnoreProperties({"firstName","lastName"})
+//@JsonIgnoreProperties({"firstName","lastName"}) ---this is static filtering
 public class Users1 extends RepresentationModel{
 	
 	@Id
@@ -36,7 +36,7 @@ public class Users1 extends RepresentationModel{
 	@Column(name="ROLE",length=50,nullable=false)
 	private String role;
 	@Column(name="SSN",length=50,nullable=false,unique=true)
-	@JsonIgnore
+//	@JsonIgnore  ---- this is static filtering
 	private String ssn;
 	
 	@OneToMany(mappedBy="users1",fetch = FetchType.EAGER)
