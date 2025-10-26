@@ -11,7 +11,7 @@
 -- Table: users1
 -- =====================================
 CREATE TABLE users1 (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    userid BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(50) NOT NULL UNIQUE,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -27,6 +27,6 @@ CREATE TABLE orders (
     orderid INT AUTO_INCREMENT PRIMARY KEY,
     order_description VARCHAR(255),
     users1_id BIGINT,
-    CONSTRAINT fk_user_order FOREIGN KEY (users1_id) REFERENCES users1(id)
+    CONSTRAINT fk_user_order FOREIGN KEY (users1_id) REFERENCES users1(userid)
 );
 

@@ -2,8 +2,11 @@ package com.stacksimplify.restservices.springboot_buildingblocks.entities;
 
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -11,11 +14,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class Users1 {
+public class Users1 extends RepresentationModel{
 	
 	@Id
 	@GeneratedValue
-	private long id;
+	private long userid;
 	@NotEmpty(message="Username is mandatory field .please provide username")
 //	@Column(name="USER_NAME",length=50,unique=true)
 	private String userName;
@@ -31,12 +34,12 @@ public class Users1 {
 	@Column(name="SSN",length=50,nullable=false,unique=true)
 	private String ssn;
 	
-	@OneToMany(mappedBy="users1")
+	@OneToMany(mappedBy="users1",fetch = FetchType.EAGER)
 	
 	private List<Order> orders;
-	public Users1(long id, String userName, String firstName, String lastName, String email, String role, String ssn,List<Order>orders) {
+	public Users1(long userid, String userName, String firstName, String lastName, String email, String role, String ssn,List<Order>orders) {
 		super();
-		this.id = id;
+		this.userid = userid;
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,11 +54,12 @@ public class Users1 {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
-	public long getId() {
-		return id;
+	
+	public long getUserid() {
+		return userid;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setUserid(long userid) {
+		this.userid = userid;
 	}
 	public String getUserName() {
 		return userName;
@@ -98,7 +102,7 @@ public class Users1 {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
+		return "User [id=" + userid + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
 	}
 	
