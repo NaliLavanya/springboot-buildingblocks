@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-//@JsonIgnoreProperties({"firstName","lastName"}) // <-- static filtering example
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,27 +16,33 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@JsonFilter(value = "userFilter") // <-- dynamic filtering
+//@JsonFilter(value = "userFilter") // <-- dynamic filtering
 public class Users1 extends RepresentationModel<Users1> {
 
     @Id
     @GeneratedValue
+    @JsonView(Views.External.class)
     private long userid;
 
     @NotEmpty(message = "Username is mandatory field. Please provide username")
+    @JsonView(Views.External.class)
     private String userName;
 
     @Size(min = 3, message = "Minimum firstname length should be 3")
     @Column(name = "FIRST_NAME", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String firstName;
 
     @Column(name = "LAST_NAME", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String lastName;
 
     @Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String email;
 
     @Column(name = "ROLE", length = 50, nullable = false)
+    @JsonView(Views.Internal.class)
     private String role;
 
     @Column(name = "SSN", length = 50, nullable = false, unique = true)
@@ -46,6 +50,7 @@ public class Users1 extends RepresentationModel<Users1> {
     private String ssn;
 
     @OneToMany(mappedBy = "users1", fetch = FetchType.EAGER)
+    @JsonView(Views.Internal.class)
     private List<Order> orders;
 
     public Users1(long userid, String userName, String firstName, String lastName,
