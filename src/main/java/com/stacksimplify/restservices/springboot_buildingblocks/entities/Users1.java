@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +17,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@JsonIgnoreProperties({"firstName","lastName"})
-public class Users1 extends RepresentationModel{
+//@JsonIgnoreProperties({"firstName","lastName"})
+@JsonFilter(value="userFilter")
+public class Users1 extends RepresentationModel<Users1>{
 	
 	@Id
 	@GeneratedValue
